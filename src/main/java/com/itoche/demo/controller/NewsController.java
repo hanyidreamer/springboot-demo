@@ -32,6 +32,7 @@ import com.itoche.demo.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -69,8 +70,9 @@ public class NewsController
 	 * @author: zhanghanyi5
 	 * @createTime: 2017/7/4 16:59
 	 */
+	@ResponseBody
 	@RequestMapping("/{page}/{pageSize}/{tableNum}/{justList}")
-	public String getNewsByPageWithParam(@PathVariable("page") Integer page, @PathVariable("pageSize") Integer pageSize, @PathVariable("tableNum") Integer tableNum,
+	public NewsRespModel getNewsByPageWithParam(@PathVariable("page") Integer page, @PathVariable("pageSize") Integer pageSize, @PathVariable("tableNum") Integer tableNum,
 			@PathVariable("justList") Integer justList)
 	{
 		// 入参解析
@@ -87,8 +89,9 @@ public class NewsController
 		// 业务处理
 		String resp = newsService.getPage(page, pageSize, paramMap);
 
+		NewsRespModel newsRespModel = JSON.parseObject(resp, NewsRespModel.class);
 		// 出参 JSON
-		return resp;
+		return newsRespModel;
 	}
 
 	/**
